@@ -4,36 +4,47 @@ const path = require("path");
 module.exports = (app) => {
 
     app.get("/api/notes", (req, res) => {
-        let noteData = fs.readFileSync(path.join(__dirname + "/../db/db.json"),"utf8");
-        return res.json(JSON.parse(noteData));
+        let createNote = fs.readFileSync(path.join(__dirname + "/../db/db.json"),"utf8");
+
+        return res.json(JSON.parse(createNote));
 
     });
 
     app.post("/api/notes", (req, res) => {
-        let noteData = fs.readFileSync(path.join(__dirname + "/../db/db.json"),"utf8");
-        const noteDataParse = JSON.parse(noteData)
+        let createNote = fs.readFileSync(path.join(__dirname + "/../db/db.json"),"utf8");
+
+        const createNoteParse = JSON.parse(createNote)
+
         const newNote = req.body;
         
-        const newId = new Date().getTime();
-        newNote.id = newId;
-        noteDataParse.push(newNote);
-        fs.writeFileSync(path.join(__dirname + "/../db/db.json"), JSON.stringify(noteDataParse))
+        const createID = new Date().getTime();
+
+        newNote.id = createID;
+
+        createNoteParse.push(newNote);
+
+        fs.writeFileSync(path.join(__dirname + "/../db/db.json"), JSON.stringify(createNoteParse))
+
         res.json(newNote)
 
     });
 
     app.delete("/api/notes/:id", (req, res) => {
-        let noteData = fs.readFileSync(path.join(__dirname + "/../db/db.json"),"utf8");
-        const noteDataParse = JSON.parse(noteData)
-        const noteId = parseInt(req.params.id);
+        let createNote = fs.readFileSync(path.join(__dirname + "/../db/db.json"),"utf8");
 
-        let newNote = noteDataParse.filter((note) => {
-            console.log(note.id, noteId, note.id === noteId)
-            return note.id !== noteId;
+        const createNoteParse = JSON.parse(createNote)
+
+        const newID = parseInt(req.params.id);
+
+        let newNote = createNoteParse.filter((note) => {
+
+            console.log(note.id, newID, note.id === newID)
+
+            return note.id !== newID;
 
         });
+
         fs.writeFileSync(path.join(__dirname + "/../db/db.json"), JSON.stringify(newNote))
 
-        res.end("This note has been deleted")
     })
 };
