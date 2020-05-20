@@ -43,8 +43,11 @@ module.exports = (app) => {
             return note.id !== newID;
 
         });
+        console.log(newNote);
 
-        fs.writeFileSync(path.join(__dirname + "/../db/db.json"), JSON.stringify(newNote))
+        fs.writeFileSync(path.join(__dirname + "/../db/db.json"), JSON.stringify(newNote));
+
+        res.JSON(newNote);
 
     })
 };
